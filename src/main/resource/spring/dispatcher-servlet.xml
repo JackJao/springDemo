@@ -39,6 +39,8 @@
                             <array>
                                 <!--此配置用于将Date类型转化为dateFormat对应的格式-->
                                 <value>WriteDateUseDateFormat</value>
+                                <!--配置输出漂亮的格式-->
+                                <value>PrettyFormat</value>
                             </array>
                         </property>
                     </bean>
