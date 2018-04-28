@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yangtao.springDemo.dao.MybatisDao">
+<mapper namespace="com.yangtao.springDemo.service.impl.UserServiceImpl">
     <select id="selectListAll" resultType="User">
         select id,name,code,birthday,createrTime from user
+    </select>
+
+    <select id="countAll" resultType="Integer">
+        select count(1) from user
     </select>
 </mapper>

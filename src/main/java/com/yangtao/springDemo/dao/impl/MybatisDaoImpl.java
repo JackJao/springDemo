@@ -1,15 +1,12 @@
 package com.yangtao.springDemo.dao.impl;
 
-import java.io.Serializable;
-import java.util.List;
+import com.yangtao.springDemo.dao.MybatisDao;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
-
-import com.yangtao.springDemo.dao.MybatisDao;
-import org.springframework.stereotype.Repository;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * 定义接口标准的实现
@@ -18,79 +15,78 @@ import org.springframework.stereotype.Repository;
  * @param <T>
  */
 @Repository
-public class MybatisDaoImpl<T> extends SqlSessionDaoSupport implements MybatisDao<T>{
+public class MybatisDaoImpl<T> implements MybatisDao<T>{
 
-	/**
-	 * 注入sqlSessionFactory
-	 */
 	@Resource
-	@Override
-	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
-	    super.setSqlSessionFactory(sqlSessionFactory);
-	}
-	
+	private SqlSessionTemplate sqlSessionTemplate;
+
 	/**
 	 * 拼接完整的sqlId：mapper的命名空间名+sqlId
 	 * @param sqlId
 	 * @return fullSqlId
 	 */
-	private String getFullSqlId(String sqlId) {
-		return new StringBuffer(this.getClass().getName()).append(sqlId).toString();
-	}
-	
-	@Override
-	public T selectOneById(Serializable id) {
-		return super.getSqlSession().selectOne(this.getFullSqlId("selectOneById"),id);
+	private String getFullSqlId(String mapperNameSpace,String sqlId) {
+		return new StringBuffer(mapperNameSpace).append(".").append(sqlId).toString();
 	}
 
 	@Override
-	public int deleteById(Serializable id) {
-		return super.getSqlSession().delete(this.getFullSqlId("deleteById"), id);
+	public T selectOneById(String mapperNameSpace, Serializable id) {
+		return sqlSessionTemplate.selectOne(this.getFullSqlId(mapperNameSpace, "selectOneById"),id);
 	}
 
 	@Override
-	public int insert(T t) {
-		return super.getSqlSession().insert(this.getFullSqlId("insert"), t);
+	public int deleteById(String mapperNameSpace, Serializable id) {
+		return sqlSessionTemplate.delete(this.getFullSqlId(mapperNameSpace, "deleteById"), id);
 	}
 
 	@Override
-	public int update(T t) {
-		return super.getSqlSession().update(this.getFullSqlId("update"), t);
+	public int insert(String mapperNameSpace, T t) {
+		return sqlSessionTemplate.insert(this.getFullSqlId(mapperNameSpace, "insert"), t);
 	}
 
 	@Override
-	public int insertSelective(T t) {
-		return super.getSqlSession().insert(this.getFullSqlId("insertSelective"), t);
+	public int update(String mapperNameSpace, T t) {
+		return sqlSessionTemplate.update(this.getFullSqlId(mapperNameSpace, "update"), t);
 	}
 
 	@Override
-	public int updateSelective(T t) {
-		return super.getSqlSession().update(this.getFullSqlId("updateSelective"), t);		
+	public int insertSelective(String mapperNameSpace, T t) {
+		return sqlSessionTemplate.insert(this.getFullSqlId(mapperNameSpace, "insertSelective"), t);
 	}
 
 	@Override
-	public T selectOneByParams(T t) {
-		return super.getSqlSession().selectOne(this.getFullSqlId("selectOneByParams"), t);
+	public int updateSelective(String mapperNameSpace, T t) {
+		return sqlSessionTemplate.update(this.getFullSqlId(mapperNameSpace, "updateSelective"), t);
 	}
 
 	@Override
-	public List<T> selectListByParams(T t) {
-		return super.getSqlSession().selectList(this.getFullSqlId("selectListByParams"), t);
+	public T selectOneByParams(String mapperNameSpace, T t) {
+		return sqlSessionTemplate.selectOne(this.getFullSqlId(mapperNameSpace, "selectOneByParams"), t);
 	}
 
 	@Override
-	public List<T> selectListAll() {
-		return super.getSqlSession().selectList(this.getFullSqlId("selectListAll"));
+	public List<T> selectListByParams(String mapperNameSpace, T t) {
+		return sqlSessionTemplate.selectList(this.getFullSqlId(mapperNameSpace, "selectListByParams"), t);
 	}
 
 	@Override
-	public Integer countByParams(T t) {
-		return super.getSqlSession().selectOne(this.getFullSqlId("countByParams"), t);
+	public List<T> selectListAll(String mapperNameSpace) {
+		return sqlSessionTemplate.selectList(this.getFullSqlId(mapperNameSpace, "selectListAll"));
 	}
 
 	@Override
-	public Integer countAll() {
-		return super.getSqlSession().selectOne(this.getFullSqlId("countAll"));
+	public Integer countByParams(String mapperNameSpace, T t) {
+		return sqlSessionTemplate.selectOne(this.getFullSqlId(mapperNameSpace, "countByParams"), t);
+	}
+
+	@Override
+	public Integer countAll(String mapperNameSpace) {
+		return sqlSessionTemplate.selectOne(this.getFullSqlId(mapperNameSpace, "countAll"));
+	}
+
+	@Override
+	public Integer custerQuery(String stament) {
+		return sqlSessionTemplate.selectOne(stament);
 	}
 
 }

@@ -8,4 +8,5 @@ import com.yangtao.springDemo.domain.User;
  * @date 2018/4/26 16:44
  */
 public interface UserService extends BaseService<User>{
+    Integer countAllNumber();
 }

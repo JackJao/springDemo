@@ -24,4 +24,9 @@ public class UserController {
     public List<User> getAll(){
         return userService.selectListAll();
     }
+
+    @GetMapping("getCount")
+    public Integer getCount(){
+        return userService.countAllNumber();
+    }
 }

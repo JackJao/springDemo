@@ -73,10 +73,14 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
 		p:dataSource-ref="dataSource" p:configLocation="classpath:mybatis/mybatis-config.xml"
 		p:mapperLocations="classpath:mapper/*Mapper.xml" />
-	<!-- spring与mybatis整合配置，扫描所有dao -->
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+	<!-- sqlSessionTemplate -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+	<!-- spring与mybatis整合配置，扫描所有dao ,配置了会自动绑定dao包中Dao.并自动识别该类的全县定名，且是该domain对象mapper.xml的命名空间-->
+	<!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
 		p:basePackage="com.yangtao.springDemo.dao"
-		p:sqlSessionFactoryBeanName="sqlSessionFactory" />
+		p:sqlSessionFactoryBeanName="sqlSessionFactory" />-->
 
 	<!-- 对dataSource 数据源进行事务管理 -->
 	<bean id="transactionManager"

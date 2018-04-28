@@ -78,4 +78,5 @@ public interface BaseService<T> {
      * @return
      */
     Integer countAll();
+
 }
