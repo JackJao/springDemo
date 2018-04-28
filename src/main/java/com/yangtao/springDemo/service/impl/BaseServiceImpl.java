@@ -19,10 +19,6 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
     @Resource
     protected MybatisDao<T> mybatisDao;
 
-    private String getMapperNameSpace(){
-        return this.getClass().getName();
-    }
-
     @Override
     public T selectOneById(Serializable id) {
 
@@ -85,7 +81,14 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
      * @return fullSqlId
      */
     protected String getStatement(String sqlId) {
-        return new StringBuffer(this.getClass().getName()).append(".").append(sqlId).toString();
+        return new StringBuffer(this.getMapperNameSpace()).append(".").append(sqlId).toString();
     }
 
+    /**
+     * 获取命名空间
+     * @return
+     */
+    private String getMapperNameSpace(){
+        return this.getClass().getName();
+    }
 }
