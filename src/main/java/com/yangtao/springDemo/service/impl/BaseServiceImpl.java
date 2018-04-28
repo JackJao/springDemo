@@ -79,7 +79,13 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
         return mybatisDao.countAll(this.getMapperNameSpace());
     }
 
+    /**
+     * 拼接完整的sqlId：mapper的命名空间名+sqlId
+     * @param sqlId
+     * @return fullSqlId
+     */
     protected String getStatement(String sqlId) {
-        return this.getClass().getName()+"."+sqlId;
+        return new StringBuffer(this.getClass().getName()).append(".").append(sqlId).toString();
     }
+
 }
