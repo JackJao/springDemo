@@ -9,3 +9,6 @@ b.在D:\OpenSoft\apache-tomcat-8.5.20\conf\context.xml中配置<Resource>配置�
 c.在/conf/server.xml中配置全局的jndi配置,然后再/conf/context.xml中引用该配置，详细配置见server.xml.04和context.xml.05
 
 二、spring中applicationContext.xml中配置jndi的两种方式，见配置文件resource/spring/spring-jndi.xml
+
+
+参阅博客：https://blog.csdn.net/u011487470/article/details/76854265
