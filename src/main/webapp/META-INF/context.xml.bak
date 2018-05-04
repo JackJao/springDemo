@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+	<!--
+	方式一
+	1.jndi配置，注意url中“&”需要转义；
+	2.需要在tomcat的lib中加入jdbc的驱动包（使用什么连接池就需要加入连接池的jar包,并在factory中指明,并配置close）
+	3.需要在tomcat/conf/context.xml中加入以下Resource元素
+	-->
+
+	<Resource name="jdbc/springDemoDB" auth="Container"
+              type="javax.sql.DataSource"
+              driverClassName="com.mysql.cj.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/testdb?allowMultiQueries=true&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=GMT"
+              username="root"
+              password="root"
+              initialSize="32"
+              maxActive="32"
+              minIdle="4"
+              maxWait="60000"
+              timeBetweenEvictionRunsMillis="60000"
+              minEvictableIdleTimeMillis="300000"
+              validationQuery="SELECT 1"
+              testWhileIdle="true"
+              testOnBorrow="false"
+              testOnReturn="false"
+              poolPreparedStatements="false"
+              maxPoolPreparedStatementPerConnectionSize="20"
+              filters="stat"
+			  factory="com.alibaba.druid.pool.DruidDataSourceFactory"
+			  closeMethod="close"
+
+    />
+
+	<!--
+	方式二
+	1.在server.xml中配置上面resourc元素
+	2.在context.xml中配置下面的ResourceLink元素
+	-->
+	<!--
+	<ResourceLink name="jdbc/springDemoDB" global="jdbc/springDemoDB" type="javax.sql.DataSource"/>
+	-->
+</Context>
