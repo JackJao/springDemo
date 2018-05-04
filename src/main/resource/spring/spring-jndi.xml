@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+    <!--jndi配置1，将resource-ref属性设置为true，这样给定的jndi-name将会自动添加“java:comp/env/”前缀-->
+    <jee:jndi-lookup jndi-name="jdbc/springDemoDB" id="dataSource" resource-ref="true"/>
+    <!--jndi配置2，这里使用命名空间p，或者使用properties属性元素-->
+    <!--<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean" p:jndiName="java:comp/env/jdbc/springDemoDB"/>-->
+</beans>
