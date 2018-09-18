@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/beans/spring-rabbit-2.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:property-placeholder location="classpath*:rabbitmq.properties" file-encoding="UTF-8"/>
+    <!-- ==========配置消费者和生成者公共部分============= -->
+    <rabbit:connection-factory id="connectionFactory" host="${rabbit.hosts}"
+                               port="${rabbit.port}" username="${rabbit.username}" password="${rabbit.password}" virtual-host="${rabbit.virtualHost}"
+                               channel-cache-size="50"/>
+    <rabbit:admin connection-factory="connectionFactory"/>
+    <!--定义消息队列-->
+    <rabbit:queue name="spittle.alert.queue.1" durable="true" auto-delete="false"/>
+    <rabbit:queue name="spittle.alert.queue.2" durable="true" auto-delete="false"/>
+    <rabbit:queue name="spittle.alert.queue.3" durable="true" auto-delete="false"/>
+    <!--绑定队列-->
+    <rabbit:fanout-exchange id="spittle.fanout" name="spittle.fanout" durable="true">
+        <rabbit:bindings>
+            <rabbit:binding queue="spittle.alert.queue.1"></rabbit:binding>
+            <rabbit:binding queue="spittle.alert.queue.2"></rabbit:binding>
+            <rabbit:binding queue="spittle.alert.queue.3"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:fanout-exchange>
+
+    <!-- =============配置生成者================== -->
+    <!--创建消息队列模板-->
+    <rabbit:template id="rabbitTemplate" connection-factory="connectionFactory"
+                     exchange="spittle.fanout" message-converter="jsonMessageConverter">
+    </rabbit:template>
+    <bean id="jsonMessageConverter" class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter"></bean>
+
+    <!-- ===============配置消费者========= -->
+    <!--<rabbit:listener-container connection-factory="connectionFactory">
+        <rabbit:listener ref="spittleListener" method="onMessage" queues="spittle.alert.queue.1,spittle.alert.queue.3,spittle.alert.queue.2"/>
+    </rabbit:listener-container>
+    <bean id="spittleListener" class="com.lp.summary.rabbitmq.impl.SpittleAlertHandler"/>-->
+</beans>
